@@ -1,0 +1,12 @@
+{
+"FILTERING_RULES": [
+    {
+    "F1": "Do not use a command involving a change of speed."
+    }
+],
+"SORTING_RULES": [
+    {
+    "G1": "As much as possible, prefer a solution without a command involving a change of altitude."
+    }
+]
+}

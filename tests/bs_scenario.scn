@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 German Aerospace Center (DLR e.V.) <https://dlr.de>
+#
+# SPDX-License-Identifier: Apache-2.0
+00:00:00>ASAS ON
+
+00:00:00>CRE SA001, B737,  50.77623,   7.186073, 140 FL300, 450
+00:00:00>CRE ULM001, A320, 49.03333858, 9.28986126, 325, FL300, 450
+
+00:00:00>FF 420
+00:07:02>END

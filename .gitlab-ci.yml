@@ -1,0 +1,156 @@
+# SPDX-FileCopyrightText: 2026 German Aerospace Center (DLR e.V.) <https://dlr.de>
+#
+# SPDX-License-Identifier: Apache-2.0
+variables: &global_variables
+  PACKAGENAME: ali
+  GIT_SUBMODULE_STRATEGY: recursive
+  FF_USE_FASTZIP: "true"
+  ARTIFACT_COMPRESSION_LEVEL: fast
+  CACHE_COMPRESSION_LEVEL: fast
+
+stages:
+  - install_deps
+  - test
+
+# CACHE
+cache:
+  key: ${CI_COMMIT_REF_NAME}
+  paths:
+    - .cache/uv/
+    - .cache/prek/
+
+# uv cache
+.uv-cache: &uv-cache
+  key: python
+  paths:
+    - .cache/uv/
+  policy: pull
+
+# Python settings template to install dependencies and set up the environment.
+.python_settings_template: &python_settings
+  image: ghcr.io/astral-sh/uv:python3.13-trixie
+  variables:
+    <<: *global_variables
+    UV_CACHE_DIR: ${CI_PROJECT_DIR}/.cache/uv/
+  cache:
+    <<: *uv-cache
+  before_script:
+    - uv venv --python 3.10
+    - uv sync
+    - source .venv/bin/activate
+
+# Run pre-commit hooks using prek
+prek:
+  image: ghcr.io/juhannc/prek:3.13-slim
+  stage: .pre
+  rules:
+    - exists:
+        - .pre-commit-config.yaml
+  cache:
+    key: prek
+    paths:
+      - .cache/prek
+  variables:
+    <<: *global_variables
+  script:
+    - apt update && apt install -y libatomic1
+    - prek run --all-files
+
+# Install dependencies
+#
+# This job installs all dependencies of the package.
+install_deps:
+  stage: install_deps
+  <<: *python_settings
+  cache:
+    <<: *uv-cache
+    policy: pull-push
+  script:
+    - uv sync
+
+# Test
+#
+# Run all tests defined in the `tests` folder and evaluate the coverage.
+# This way we can make sure the package passes all tests.
+# <https://docs.pytest.org/en/7.1.x/>
+pytest:
+  stage: test
+  needs: [install_deps]
+  <<: *python_settings
+  script:
+    - pytest
+  coverage: /^TOTAL.+?(\d+\%)$/
+  artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+      junit: report.xml
+
+# Run flake8 to look for common mistakes in the style of the code.
+# <https://github.com/awelzel/flake8-gl-codeclimate>
+flake8:
+  stage: test
+  interruptible: true
+  needs: [install_deps]
+  <<: *python_settings
+  script:
+    - flake8 --exit-zero --format gl-codeclimate --output-file gl-code-quality-report.json src/${PACKAGENAME}
+  artifacts:
+    reports:
+      codequality: gl-code-quality-report.json
+
+# Run pylint for linting and code quality.
+# <https://pypi.org/project/pylint-gitlab/>
+pylint:
+  stage: test
+  interruptible: true
+  needs: [install_deps]
+  <<: *python_settings
+  script:
+    - mkdir -p public/badges/ public/lint/
+    - echo undefined > public/badges/pylint.score
+    - pylint --exit-zero --output-format=text src/${PACKAGENAME} | tee public/lint/pylint.log
+    - sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' public/lint/pylint.log > public/badges/pylint.score
+    - pylint --exit-zero --output-format=pylint_gitlab.GitlabCodeClimateReporter src/${PACKAGENAME} > codeclimate.json
+    - pylint --exit-zero --output-format=pylint_gitlab.GitlabPagesHtmlReporter src/${PACKAGENAME} > public/lint/index.html
+    - anybadge --overwrite --label "pylint" --value=$(cat public/badges/pylint.score) --file=public/badges/pylint.svg 4=red 6=orange 8=yellow 10=green
+    - |
+      echo "Your score is: $(cat public/badges/pylint.score)"
+  artifacts:
+    paths:
+      - public
+    reports:
+      codequality: codeclimate.json
+    when: always
+
+# Run ruff for linting and code quality.
+# <https://docs.astral.sh/ruff/integrations/#gitlab-cicd>
+ruff:
+  stage: test
+  interruptible: true
+  image:
+    name: ghcr.io/astral-sh/ruff:alpine
+  before_script:
+    - ruff --version
+  script:
+    - ruff check src/${PACKAGENAME} --output-format=gitlab > code-quality-report.json
+  artifacts:
+    reports:
+      codequality: code-quality-report.json
+
+# Run mypy for static type checking.
+# <https://pypi.org/project/mypy-gitlab-code-quality/>
+mypy:
+  stage: test
+  interruptible: true
+  needs: [install_deps]
+  <<: *python_settings
+  script:
+    - mypy src/${PACKAGENAME} --output=json > mypy-out.json || true
+    - mypy-gitlab-code-quality < mypy-out.json > codequality.json
+  artifacts:
+    when: always
+    reports:
+      codequality: codequality.json

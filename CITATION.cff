@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2026 Charles Berro <charles.berro@dlr.de>
+# SPDX-FileCopyrightText: 2026 Thomas Stefani <thomas.stefani@dlr.de>
+# SPDX-FileCopyrightText: 2026 Johann Christensen <johann.christensen@dlr.de>
+
+# SPDX-License-Identifier: Apache-2.0
+
+
+cff-version: 1.2.0
+title: Air Traffic Control Language Interface
+
+type: software
+authors:
+  - given-names: Charles
+    family-names: Berro
+    email: charles.berro@dlr.de
+    affiliation: German Aerospace Center (DLR)
+    orcid: 'https://orcid.org/0000-0002-2662-8774'
+
+  - given-names: Thomas
+    family-names: Stefani
+    email: thomas.stefani@dlr.de
+    affiliation: German Aerospace Center (DLR)
+    orcid: 'https://orcid.org/0000-0001-7352-0590'
+
+  - given-names: Johann
+    family-names: Christensen
+    email: johann.christensen@dlr.de
+    affiliation: German Aerospace Center (DLR)
+    orcid: 'https://orcid.org/0000-0001-9871-122X'
+
+identifiers:
+  - type: doi
+    value: #TODO: add when zenodo archive is created
+repository-code: 'https://github.com/DLR-KI/ATC-LLM-Interface'
+url: #TODO: add when zenodo archive is created
+keywords:
+  - Air Traffic Control
+  - Human machine interface
+  - Large Language Model
+  - Python
+date-released: # TODO add when zenodo archive is created.  Format YYYY-MM-DD 

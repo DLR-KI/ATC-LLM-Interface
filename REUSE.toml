@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2026 German Aerospace Center (DLR e.V.) <https://dlr.de>
+#
+# SPDX-License-Identifier: Apache-2.0
+
+version = 1
+
+[[annotations]]
+SPDX-FileCopyrightText = "2026 German Aerospace Center (DLR e.V.) <https://dlr.de>"
+SPDX-License-Identifier = "Apache-2.0"
+path = [
+  "src/ali/experiments/**/*.ipynb",
+  "src/ali/experiments/**/*.jsonl",
+  "scenarios/**",
+  "tests/**/*.json",
+  "uv.lock",
+  "docs/**"
+]

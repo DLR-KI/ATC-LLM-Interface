@@ -1,0 +1,4 @@
+# SPDX-FileCopyrightText: 2026 German Aerospace Center (DLR e.V.) <https://dlr.de>
+#
+# SPDX-License-Identifier: Apache-2.0
+"""Conflict Resolution Solver."""

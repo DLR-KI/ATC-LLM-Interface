@@ -1,0 +1,168 @@
+# SPDX-FileCopyrightText: 2026 German Aerospace Center (DLR e.V.) <https://dlr.de>
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[build-system]
+build-backend = "uv_build"
+requires = ["uv_build>=0.8.11"]
+
+[dependency-groups]
+ci = [
+  "anybadge",
+  "codeclimate-test-reporter",
+  "flake8-docstrings-complete",
+  "flake8-docstrings",
+  "flake8-gl-codeclimate",
+  "flake8-pyproject",
+  "flake8",
+  "mypy-gitlab-code-quality",
+  "mypy",
+  "pylint-gitlab",
+  "pylint-per-file-ignores",
+  "pylint"
+]
+dev = ["uv>=0.8.11", "prek>=0.2.1", "reuse>=5.1.1", "bpython>=0.25"]
+tests = ["coverage", "pytest-cov", "pytest>=7.4.0", "pandas"]
+
+[project]
+authors = [
+  {name = "Charles Berro", email = "charles.berro@dlr.de"},
+  {name = "Fotini Deligiannaki", email = "fotini.deligiannaki@dlr.de"},
+  {name = "Johann Christensen", email = "johann.christensen@dlr.de"},
+  {name = "Thomas Stefani", email = "thomas.stefani@dlr.de"}
+]
+classifiers = [
+  "Intended Audience :: Science/Research",
+  "Natural Language :: English",
+  "Operating System :: POSIX :: Linux",
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Programming Language :: Python :: Implementation :: CPython"
+]
+dependencies = [
+  "bluesky-navdata>=1.0.0",
+  "bluesky-guidata>=1.0.1",
+  "bluesky-simulator[pygame]>=1.1.1.dev14",
+  "gradio>=5.47.2,<6",
+  "ollama>=0.6.0",
+  "pandas>=2.3.3"
+]
+description = "Air Traffic Controller Language Interface (ALI)"
+keywords = [
+  "Air Traffic Control",
+  "Human machine interface",
+  "Large Language Model"
+]
+license = "Apache-2.0"
+license-files = ["LICENSE.md", "LICENSES/*.txt"]
+name = "ali"
+readme = "README.md"
+requires-python = ">=3.10"
+version = "1.0.0"
+
+[project.scripts]
+ali = "ali.ali:main"
+
+[project.urls]
+paper = "https://doi.org/10.1109/DASC66011.2025.11257297"
+repository = "https://github.com/DLR-KI/ATC-LLM-Interface"
+
+[tool.flake8]
+check-return-types = true
+extend-ignore = ["DCO010", "DCO060", "DOC201", "DOC20"]
+max-complexity = "10"
+max-line-length = "88"
+# tests/*: Ignore docstring style for tests
+per-file-ignores = ["tests/*: D"]
+select = ["DCO", "DOC"]
+style = "google"
+
+[tool.licensecheck]
+# bluesky-guidata and bluesky-navdata are now released under MIT license.
+# see: https://github.com/TUDelft-CNS-ATM/bluesky/blob/34367678732a6cbc7c0f0801df4bbefdaa07309a/packaging/bluesky-guidata/pyproject.toml
+# and: https://github.com/TUDelft-CNS-ATM/bluesky/blob/34367678732a6cbc7c0f0801df4bbefdaa07309a/packaging/bluesky-navdata/pyproject.toml
+# As their respective pypi packages are not yet updated, and licensecheck fails to detect the license from local metadata,
+# the licensecheck for these packages is ignored for now.
+ignore_packages = ["bluesky-guidata", "bluesky-navdata"]
+using = "PEP631"
+zero = true
+
+[tool.mypy]
+ignore_missing_imports = true
+python_version = "3.10"
+
+[tool.pylint.MASTER]
+load-plugins = ["pylint_per_file_ignores"]
+
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = "88"
+
+[tool.pylint.SIMILARITIES]
+ignore-comments = "yes"
+ignore-docstrings = "yes"
+ignore-imports = "yes"
+min-similarity-lines = 10
+
+[tool.pylint-per-file-ignores]
+# tests/*: Ignore missing docs (C0114, C0116), too many public methods (R0904), access to protected member (W0212)
+"tests/*" = "C0114,C0116,R0903,R0904,W0212"
+
+[tool.pytest.ini_options]
+addopts = "--cov=src/ali/ --cov-report=term-missing --cov-report=xml:coverage.xml --junitxml=report.xml"
+filterwarnings = ["ignore::tqdm.TqdmExperimentalWarning"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.format]
+preview = true
+
+[tool.ruff.lint]
+extend-fixable = ["ALL"]
+extend-select = [
+  "A",
+  "ANN",
+  "B",
+  "C4",
+  "C90",
+  "D",
+  "DOC",
+  "E",
+  "F",
+  "FURB",
+  "I",
+  "INP",
+  "N",
+  "NPY",
+  "RUF",
+  "SIM",
+  "UP",
+  "W"
+]
+ignore = ["E203", "SIM300", "D105", "D107"]
+preview = true
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "ANN201", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.uv]
+default-groups = "all"
+
+[tool.uv.sources]
+bluesky-guidata = {git = "https://github.com/TUDelft-CNS-ATM/bluesky", subdirectory = "packaging/bluesky-guidata"}
+bluesky-navdata = {git = "https://github.com/TUDelft-CNS-ATM/bluesky", subdirectory = "packaging/bluesky-navdata"}
+bluesky-simulator = {git = "https://github.com/TUDelft-CNS-ATM/bluesky"}
