@@ -1,6 +1,4 @@
-# SPDX-FileCopyrightText: 2026 Charles Berro <charles.berro@dlr.de>
-# SPDX-FileCopyrightText: 2026 Thomas Stefani <thomas.stefani@dlr.de>
-# SPDX-FileCopyrightText: 2026 Johann Christensen <johann.christensen@dlr.de>
+# SPDX-FileCopyrightText: 2026 German Aerospace Center (DLR e.V.) <https://dlr.de>
 
 # SPDX-License-Identifier: Apache-2.0
 
@@ -32,7 +30,7 @@ identifiers:
   - type: doi
     value: #TODO: add when zenodo archive is created
 repository-code: 'https://github.com/DLR-KI/ATC-LLM-Interface'
-url: #TODO: add when zenodo archive is created
+url: 'https://github.com/DLR-KI/ATC-LLM-Interface'
 keywords:
   - Air Traffic Control
   - Human machine interface
