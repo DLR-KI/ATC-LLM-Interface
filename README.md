@@ -5,6 +5,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # ALI, the Air-traffic-control Language Interface
 
+[![REUSE status](https://api.reuse.software/badge/github.com/DLR-KI/ATC-LLM-Interface)](https://api.reuse.software/info/github.com/DLR-KI/ATC-LLM-Interface)
+[![DOI](https://zenodo.org/badge/1008346303.svg)](https://doi.org/10.5281/zenodo.18335093)
+
+
 This project demonstrates the Air-traffic-control Language Interface presented in the paper:
 [Leveraging Large Language Models as an Interface to Conflict Resolution for Human-AI Alignment in Air Traffic Control](https://doi.org/10.1109/DASC66011.2025.11257297).
 

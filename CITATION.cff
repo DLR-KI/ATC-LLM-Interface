@@ -28,7 +28,7 @@ authors:
 
 identifiers:
   - type: doi
-    value: #TODO: add when zenodo archive is created
+    value: 10.5281/zenodo.18335093
 repository-code: 'https://github.com/DLR-KI/ATC-LLM-Interface'
 url: 'https://github.com/DLR-KI/ATC-LLM-Interface'
 keywords:
@@ -36,4 +36,4 @@ keywords:
   - Human machine interface
   - Large Language Model
   - Python
-date-released: # TODO add when zenodo archive is created.  Format YYYY-MM-DD 
+date-released: 2026-01-22
