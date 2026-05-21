@@ -173,14 +173,12 @@ def init(policy: ATCPolicy | None = None, gui: bool = True) -> None:
                 chat_op = gr.Chatbot(
                     elem_classes="chatbot",
                     show_label=False,
-                    type="messages",
                 )
             with gr.Column(elem_id="chat-postop"):
                 gr.Markdown("# Post-operation explanation ")
                 chat_details = gr.Chatbot(
                     elem_classes="chatbot",
                     show_label=False,
-                    type="messages",
                 )
 
         timer = gr.Timer(value=2)
