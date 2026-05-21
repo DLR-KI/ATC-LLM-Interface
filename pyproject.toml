@@ -50,7 +50,7 @@ dependencies = [
   "bluesky-navdata>=1.0.0",
   "bluesky-guidata>=1.0.1",
   "bluesky-simulator[pygame]>=1.1.1.dev14",
-  "gradio>=5.47.2,<6",
+  "gradio>=6.7.0,<7",
   "ollama>=0.6.0",
   "pandas>=2.3.3"
 ]
